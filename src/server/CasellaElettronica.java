@@ -8,6 +8,11 @@ import mail.Mail;
 
 public class CasellaElettronica implements CasellaElettronicaBase {
 
+	String indirizzo;
+	
+	public CasellaElettronica(String indirizzo) {
+		this.indirizzo = indirizzo;
+	}
 	@Override
 	public void sendMail(String[] destinatari, Mail mail) throws RemoteException {
 		// TODO Auto-generated method stub

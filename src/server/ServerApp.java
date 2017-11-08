@@ -5,6 +5,9 @@ import java.rmi.Naming;
 import java.rmi.RemoteException;
 import java.rmi.registry.LocateRegistry;
 import java.rmi.server.UnicastRemoteObject;
+import java.util.Collections;
+import java.util.HashMap;
+import java.util.Map;
 
 import javax.swing.event.EventListenerList;
 
@@ -14,6 +17,8 @@ import mail.ServerMailBase;
 public class ServerApp extends UnicastRemoteObject implements ServerMailBase{
 
 	private static final long serialVersionUID = -7448759119983198734L;
+	
+	Map<String, CasellaElettronica> caselleList;
 
 	public static interface ErrorEventLauncher {
 		public void run(ServerErrorListener listener);
@@ -22,6 +27,7 @@ public class ServerApp extends UnicastRemoteObject implements ServerMailBase{
 	
 	public ServerApp(ServerErrorListener controller) throws RemoteException {
 		super();
+		this.caselleList = Collections.synchronizedMap(new HashMap<String, CasellaElettronica>());
 		addServerErrorListener(controller);
 	}
 	
@@ -70,20 +76,22 @@ public class ServerApp extends UnicastRemoteObject implements ServerMailBase{
 
 	@Override
 	public CasellaElettronicaBase loginMail(String mail) throws RemoteException {
-		// TODO Auto-generated method stub
-		return null;
+		CasellaElettronica c = this.caselleList.get(mail);
+		return c;
 	}
 
 	@Override
 	public boolean mailExist(String mail) throws RemoteException {
-		// TODO Auto-generated method stub
-		return false;
+		return (this.caselleList.get(mail) != null);
 	}
 
 	@Override
 	public CasellaElettronicaBase createMail(String mail) throws RemoteException {
-		// TODO Auto-generated method stub
-		return null;
+		if(this.caselleList.containsKey(mail))
+			return null;
+		else
+			return this.caselleList.put(mail, new CasellaElettronica("mail"));
+			
 	}
 
 }
