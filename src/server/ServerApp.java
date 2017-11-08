@@ -8,6 +8,7 @@ import java.rmi.server.UnicastRemoteObject;
 
 import javax.swing.event.EventListenerList;
 
+import mail.CasellaElettronicaBase;
 import mail.ServerMailBase;
 
 public class ServerApp extends UnicastRemoteObject implements ServerMailBase{
@@ -65,6 +66,24 @@ public class ServerApp extends UnicastRemoteObject implements ServerMailBase{
 			System.exit(-1);
 		}
 		serverApp.initServer();
+	}
+
+	@Override
+	public CasellaElettronicaBase loginMail(String mail) throws RemoteException {
+		// TODO Auto-generated method stub
+		return null;
+	}
+
+	@Override
+	public boolean mailExist(String mail) throws RemoteException {
+		// TODO Auto-generated method stub
+		return false;
+	}
+
+	@Override
+	public CasellaElettronicaBase createMail(String mail) throws RemoteException {
+		// TODO Auto-generated method stub
+		return null;
 	}
 
 }

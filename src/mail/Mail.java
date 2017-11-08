@@ -1,6 +1,10 @@
 package mail;
 
-public class Mail {
+import java.io.Serializable;
+
+public class Mail implements Serializable{
+	
+	private static final long serialVersionUID = 6350421221845772435L;
 	
 	public final String oggetto;
 	public final String testo;
