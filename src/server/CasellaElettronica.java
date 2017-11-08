@@ -1,16 +1,18 @@
 package server;
 
 import java.rmi.RemoteException;
+import java.rmi.server.UnicastRemoteObject;
 
 import mail.CasellaElettronicaBase;
 import mail.InfoCasellaElettronica;
 import mail.Mail;
 
-public class CasellaElettronica implements CasellaElettronicaBase {
-
+public class CasellaElettronica extends UnicastRemoteObject implements CasellaElettronicaBase {
+	private static final long serialVersionUID = -9167658156962602443L;
 	String indirizzo;
 	
-	public CasellaElettronica(String indirizzo) {
+	public CasellaElettronica(String indirizzo) throws RemoteException {
+		super();
 		this.indirizzo = indirizzo;
 	}
 	@Override
