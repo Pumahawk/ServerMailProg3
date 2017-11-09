@@ -3,9 +3,6 @@ package server;
 import javax.swing.text.BadLocationException;
 import javax.swing.text.Document;
 
-import mail.ServerEvent;
-import mail.ServerListener;
-
 public class ServerLogger implements ServerListener {
 	
 	Document lg;

@@ -12,8 +12,6 @@ import java.util.Map;
 import javax.swing.event.EventListenerList;
 
 import mail.CasellaElettronicaBase;
-import mail.ServerEvent;
-import mail.ServerListener;
 import mail.ServerMailBase;
 
 public class ServerMail extends UnicastRemoteObject implements ServerMailBase {

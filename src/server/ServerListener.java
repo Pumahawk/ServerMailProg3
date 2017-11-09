@@ -1,4 +1,4 @@
-package mail;
+package server;
 
 import java.util.EventListener;
 
