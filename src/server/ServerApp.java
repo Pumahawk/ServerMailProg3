@@ -9,7 +9,7 @@ public class ServerApp {
 		ServerMail serverApp;
 		try {
 			serverApp = new ServerMail(new ServerErrorController());
-			serverApp.addServerListener(new ServerController());
+			serverApp.addServerListener(new ServerLogger());
 		} catch (RemoteException e) {
 			System.err.print("Impossibile creare l'oggetto server.");
 			e.printStackTrace();

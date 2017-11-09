@@ -3,7 +3,7 @@ package server;
 import mail.ServerEvent;
 import mail.ServerListener;
 
-public class ServerController implements ServerListener{
+public class ServerLogger implements ServerListener{
 
 	@Override
 	public void login(ServerEvent e, String mail) {
