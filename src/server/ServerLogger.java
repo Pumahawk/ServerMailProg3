@@ -1,10 +1,16 @@
 package server;
 
+import javax.swing.text.Document;
+
 import mail.ServerEvent;
 import mail.ServerListener;
 
 public class ServerLogger implements ServerListener{
 
+	Document lg;
+	public ServerLogger(Document lg) {
+		this.lg = lg;
+	}
 	@Override
 	public void login(ServerEvent e, String mail) {
 		System.out.println("<ServerController:login>");

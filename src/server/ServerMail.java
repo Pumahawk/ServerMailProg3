@@ -30,10 +30,9 @@ public class ServerMail extends UnicastRemoteObject implements ServerMailBase {
 	}
 	private EventListenerList listeners = new EventListenerList();
 	
-	public ServerMail(ServerErrorListener controller) throws RemoteException {
+	public ServerMail() throws RemoteException {
 		super();
 		this.caselleList = Collections.synchronizedMap(new HashMap<String, CasellaElettronica>());
-		addServerErrorListener(controller);
 	}
 	
 	public void initServer(){
