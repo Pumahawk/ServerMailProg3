@@ -17,6 +17,7 @@ import mail.InfoCasellaElettronica;
 import mail.Mail;
 import mail.MailEvent;
 import mail.MailListener;
+import server.CasellaElettronicaEvent;
 
 public class CasellaElettronica extends UnicastRemoteObject implements CasellaElettronicaBase {
 	
@@ -26,6 +27,14 @@ public class CasellaElettronica extends UnicastRemoteObject implements CasellaEl
 	}
 	void fireMailListeners(MailEventLauncher run) {
 		for(MailListener l : listeners.getListeners(MailListener.class)) {
+			run.run(l);
+		}
+	}
+	public static interface CasellaElettronicaEventLauncher {
+		public void run(CasellaElettronicaListener listener);
+	}
+	void fireCasellaElettronicaListener(CasellaElettronicaEventLauncher run) {
+		for(CasellaElettronicaListener l : listeners.getListeners(CasellaElettronicaListener.class)) {
 			run.run(l);
 		}
 	}
@@ -66,9 +75,9 @@ public class CasellaElettronica extends UnicastRemoteObject implements CasellaEl
 	}
 
 	@Override
-	public Mail[] getAllMail() throws RemoteException, CasellaElettronicaException {
-		// TODO Auto-generated method stub
-		return null;
+	public Mail[] getAllMail() throws RemoteException {
+		fireRequestPerformed(new CasellaElettronicaEvent(this, CasellaElettronicaEvent.Code.GET_ALL_MAIL_REQUEST));
+		return this.mail.toArray(new Mail[0]);
 	}
 
 	@Override
@@ -82,9 +91,12 @@ public class CasellaElettronica extends UnicastRemoteObject implements CasellaEl
 		mailCounter.incrementAndGet();
 		fireMailRicevuta(new MailEvent(this, mail));
 	}
-	
+
 	public void addMailListener(MailListener listener) {
 		listeners.add(MailListener.class, listener);
+	}
+	public void addCasellaElettronicaListener(CasellaElettronicaListener listener) {
+		listeners.add(CasellaElettronicaListener.class, listener);
 	}
 
 	void fireMailInviata(MailEvent e) {
@@ -93,6 +105,10 @@ public class CasellaElettronica extends UnicastRemoteObject implements CasellaEl
 	
 	void fireMailRicevuta(MailEvent e) {
 		fireMailListeners(l -> l.mailRicevuta(e));
+	}
+	
+	void fireRequestPerformed(CasellaElettronicaEvent e) {
+		fireCasellaElettronicaListener(l -> l.actionPerformed(e));
 	}
 	
 	

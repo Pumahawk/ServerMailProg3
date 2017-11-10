@@ -6,7 +6,7 @@ import javax.swing.text.Document;
 import mail.MailEvent;
 import mail.MailListener;
 
-public class ServerLogger implements ServerListener, MailListener {
+public class ServerLogger implements ServerListener, MailListener, CasellaElettronicaListener {
 	
 	Document lg;
 	private final String nameClass;
@@ -43,6 +43,7 @@ public class ServerLogger implements ServerListener, MailListener {
 		println("<"+nameClass+":creazioneMail>");
 		println("Richiesta creazione mail: " + mail);
 		casella.addMailListener(this);
+		casella.addCasellaElettronicaListener(this);
 		
 	}
 
@@ -62,6 +63,16 @@ public class ServerLogger implements ServerListener, MailListener {
 		println("Destinatari:");
 		for(String destinatario : e.mail.destinatari)
 			println("--> " + destinatario);
+		
+	}
+
+	@Override
+	public synchronized void actionPerformed(CasellaElettronicaEvent e) {
+		switch (e.code) {
+		case GET_ALL_MAIL_REQUEST:
+			println("Richieste tutte le email da: " + ((CasellaElettronica)e.getSource()).indirizzo);
+			break;
+		}
 		
 	}
 
