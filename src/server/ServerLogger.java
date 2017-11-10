@@ -39,9 +39,10 @@ public class ServerLogger implements ServerListener, MailListener {
 	}
 
 	@Override
-	public synchronized void creazioneMail(ServerEvent e, String mail) {
+	public synchronized void creazioneMail(ServerEvent e, String mail, CasellaElettronica casella) {
 		println("<"+nameClass+":creazioneMail>");
 		println("Richiesta creazione mail: " + mail);
+		casella.addMailListener(this);
 		
 	}
 
@@ -56,7 +57,7 @@ public class ServerLogger implements ServerListener, MailListener {
 
 	@Override
 	public synchronized void mailRicevuta(MailEvent e) {
-		println("<"+nameClass+":mailInviata>");
+		println("<"+nameClass+":mailRicevuta>");
 		println("Mittente: " + e.mail.mittente);
 		println("Destinatari:");
 		for(String destinatario : e.mail.destinatari)

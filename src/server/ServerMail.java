@@ -18,7 +18,7 @@ public class ServerMail extends UnicastRemoteObject implements ServerMailBase {
 
 	private static final long serialVersionUID = -7448759119983198734L;
 	
-	Map<String, CasellaElettronica> caselleList;
+	final Map<String, CasellaElettronica> caselleList;
 
 	public static interface ErrorEventLauncher {
 		public void run(ServerErrorListener listener);
@@ -70,7 +70,10 @@ public class ServerMail extends UnicastRemoteObject implements ServerMailBase {
 		fireServerListeners(run -> run.mailExist(e, mail));
 	}
 	void fireCreazioneMail(ServerEvent e, String mail) {
-		fireServerListeners(run -> run.creazioneMail(e, mail));
+		this.fireCreazioneMail(e, mail, null);
+	}
+	void fireCreazioneMail(ServerEvent e, String mail, CasellaElettronica casella) {
+		fireServerListeners(run -> run.creazioneMail(e, mail, casella));
 	}
 
 	public void addServerErrorListener(ServerErrorListener listener) {
@@ -96,11 +99,15 @@ public class ServerMail extends UnicastRemoteObject implements ServerMailBase {
 
 	@Override
 	public CasellaElettronicaBase createMail(String mail) throws RemoteException {
-		fireCreazioneMail(new ServerEvent(this), mail);
-		if(this.caselleList.containsKey(mail))
+		if(this.caselleList.containsKey(mail)) {
+			fireCreazioneMail(new ServerEvent(this), mail);
 			return null;
-		else
-			return this.caselleList.put(mail, new CasellaElettronica("mail"));
+		}
+		else {
+			CasellaElettronica c = new CasellaElettronica(mail, this);
+			fireCreazioneMail(new ServerEvent(this), mail, c);
+			return this.caselleList.put(mail, c);
+		}
 			
 	}
 }
