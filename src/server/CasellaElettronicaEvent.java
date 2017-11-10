@@ -6,7 +6,8 @@ public class CasellaElettronicaEvent extends EventObject {
 	private static final long serialVersionUID = 1L;
 
 	public static enum Code {
-		GET_ALL_MAIL_REQUEST
+		GET_ALL_MAIL_REQUEST,
+		GET_INFO_REQUEST
 	}
 
 	public final Code code;

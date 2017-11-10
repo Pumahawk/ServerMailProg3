@@ -82,8 +82,8 @@ public class CasellaElettronica extends UnicastRemoteObject implements CasellaEl
 
 	@Override
 	public InfoCasellaElettronica getInfo() throws RemoteException {
-		// TODO Auto-generated method stub
-		return null;
+		fireRequestPerformed(new CasellaElettronicaEvent(this, CasellaElettronicaEvent.Code.GET_INFO_REQUEST));
+		return new InfoCasellaElettronica(indirizzo);
 	}
 
 	public void addMail(Mail mail) {
