@@ -15,6 +15,7 @@ import mail.CasellaElettronicaException;
 import mail.CasellaElettronicaException.Error;
 import mail.InfoCasellaElettronica;
 import mail.Mail;
+import mail.Mail.IDMail;
 import mail.MailEvent;
 import mail.MailListener;
 import server.CasellaElettronicaEvent;
@@ -69,9 +70,19 @@ public class CasellaElettronica extends UnicastRemoteObject implements CasellaEl
 	}
 
 	@Override
-	public Mail getMail(String id) throws RemoteException, CasellaElettronicaException{
-		// TODO Auto-generated method stub
-		return null;
+	public Mail getMail(IDMail id) throws RemoteException, CasellaElettronicaException {
+		//TODO TESTARE
+		CasellaElettronicaException error = new CasellaElettronicaException(Error.ID_MAIL_NOT_EXIST, "ID mail errato");;
+		if(!this.server.caselleList.containsKey(id.mittente))
+			throw error;
+		synchronized (this.server.caselleList.get(id.mittente).mail) {
+			for(Mail t : this.server.caselleList.get(id.mittente).mail)
+				if(t.id.equals(id)) {
+					fireRequestPerformed(new CasellaElettronicaEvent(this, CasellaElettronicaEvent.Code.GET_MAIL_REQUEST));
+					return t;
+				}
+		}
+		throw error;
 	}
 
 	@Override
@@ -110,7 +121,4 @@ public class CasellaElettronica extends UnicastRemoteObject implements CasellaEl
 	void fireRequestPerformed(CasellaElettronicaEvent e) {
 		fireCasellaElettronicaListener(l -> l.actionPerformed(e));
 	}
-	
-	
-
 }

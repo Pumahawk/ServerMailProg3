@@ -72,6 +72,12 @@ public class ServerLogger implements ServerListener, MailListener, CasellaElettr
 		case GET_ALL_MAIL_REQUEST:
 			println("Richieste tutte le email da: " + ((CasellaElettronica)e.getSource()).indirizzo);
 			break;
+		case GET_INFO_REQUEST:
+			println("Richieste informazioni casella elettronica da: " + ((CasellaElettronica)e.getSource()).indirizzo);
+			break;
+		case GET_MAIL_REQUEST:
+			println("Richiesta mail da : " + ((CasellaElettronica)e.getSource()).indirizzo);
+			break;
 		}
 		
 	}

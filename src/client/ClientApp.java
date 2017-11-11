@@ -8,6 +8,7 @@ import java.rmi.RemoteException;
 import mail.CasellaElettronicaBase;
 import mail.CasellaElettronicaException;
 import mail.Mail;
+import mail.Mail.IDMail;
 import mail.ServerMailBase;
 
 public class ClientApp {

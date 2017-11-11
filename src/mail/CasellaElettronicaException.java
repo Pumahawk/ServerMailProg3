@@ -6,7 +6,8 @@ public final class CasellaElettronicaException extends Exception implements Seri
 	private static final long serialVersionUID = 1L;
 	public static enum Error {
 		GENERAL,
-		INVIO_DEST_NOT_FOUND
+		INVIO_DEST_NOT_FOUND,
+		ID_MAIL_NOT_EXIST
 	}
 	
 	public final Error code;
