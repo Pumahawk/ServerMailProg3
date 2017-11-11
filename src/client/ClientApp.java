@@ -37,8 +37,10 @@ public class ClientApp {
 			server.createMail("lorenzo@gmail.com");
 			server.createMail("lorenzo2@gmail.com");
 			app.caselleElettronica = server.loginMail(app.mail);
-			String[] destinatari = {"lorenzo2@gmail.com"};
-			app.caselleElettronica.sendMail(new Mail(app.mail, destinatari, "testMail", "testo"));
+			String[] destinatari = {"lorenzo@gmail.com"};
+			app.caselleElettronica.sendMail(destinatari, "testMail", "testo");
+			app.caselleElettronica.getInfo();
+			app.caselleElettronica.getMail(new IDMail(0, "lorenzo@gmail.com"));
 		} catch (RemoteException e) {
 			System.err.println("Errore login server.");
 			e.printStackTrace();

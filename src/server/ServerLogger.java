@@ -42,8 +42,10 @@ public class ServerLogger implements ServerListener, MailListener, CasellaElettr
 	public synchronized void creazioneMail(ServerEvent e, String mail, CasellaElettronica casella) {
 		println("<"+nameClass+":creazioneMail>");
 		println("Richiesta creazione mail: " + mail);
-		casella.addMailListener(this);
-		casella.addCasellaElettronicaListener(this);
+		if(casella != null) {
+			casella.addMailListener(this);
+			casella.addCasellaElettronicaListener(this);
+		}
 		
 	}
 

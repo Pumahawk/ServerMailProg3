@@ -55,14 +55,15 @@ public class CasellaElettronica extends UnicastRemoteObject implements CasellaEl
 		this.server = server;
 	}
 	@Override
-	public void sendMail(Mail mail) throws RemoteException, CasellaElettronicaException{
+	public void sendMail(String[] destinatari, String oggetto, String testo) throws RemoteException, CasellaElettronicaException{
+		Mail mail = new Mail(this.indirizzo, destinatari, oggetto, testo);
 		Set<String> elencoMail = this.server.caselleList.keySet();
 		synchronized(this.server.caselleList) {
-			for(String m : mail.destinatari) {
+			for(String m : destinatari) {
 				if(!elencoMail.contains(m))
 					throw new CasellaElettronicaException(Error.INVIO_DEST_NOT_FOUND, "Destinatario " + m + " non trovato.");
 			}
-			for(String m : mail.destinatari) {
+			for(String m : destinatari) {
 				this.server.caselleList.get(m).addMail(mail);
 			}
 		}
@@ -98,7 +99,8 @@ public class CasellaElettronica extends UnicastRemoteObject implements CasellaEl
 	}
 
 	public void addMail(Mail mail) {
-		this.mail.add(mail);
+		this.mail.add(new Mail(new IDMail(mailCounter.get(), mail.mittente), mail.mittente, mail.destinatari,
+				mail.oggetto, mail.testo));
 		mailCounter.incrementAndGet();
 		fireMailRicevuta(new MailEvent(this, mail));
 	}
