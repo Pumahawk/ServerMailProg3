@@ -23,6 +23,9 @@ public class ServerApp {
 		LoggerGui lg = new LoggerGui(logDoc);
 		try {
 			serverApp = new ServerMail();
+
+			serverApp.addServerErrorListener(new ServerErrorController());
+			serverApp.addServerListener(new ServerLogger(logDoc));
 			
 			serverApp.createMail("lorenzo@gmail.com");
 			serverApp.createMail("lorenzo2@gmail.com");
