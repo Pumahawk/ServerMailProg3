@@ -12,6 +12,8 @@ import java.util.concurrent.TimeUnit;
 
 import javax.swing.DefaultListModel;
 import javax.swing.JOptionPane;
+import javax.swing.table.DefaultTableModel;
+import javax.swing.table.TableModel;
 
 import client.gui.Main;
 import mail.CMailListener;
@@ -21,7 +23,7 @@ import mail.Mail;
 import mail.ServerMailBase;
 
 public class ClientApp {
-	public final static ExecutorService exeService = new ThreadPoolExecutor(3, 3, 1, TimeUnit.SECONDS, new LinkedBlockingQueue<>());;
+	public final static ExecutorService exeService = new ThreadPoolExecutor(3, 3, 1, TimeUnit.SECONDS, new LinkedBlockingQueue<>());
 	
 	
 	public static class CMailController extends UnicastRemoteObject implements CMailListener  {
@@ -38,7 +40,6 @@ public class ClientApp {
 			System.out.println("Hai ricevuto una nuova mail.");
 			System.out.println("Mittente: " + mail.mittente);	
 			System.out.println("Oggetto: " + mail.argomento);
-			
 		}
 		
 	}
@@ -64,17 +65,21 @@ public class ClientApp {
 		}
 		try {
 
-			DefaultListModel<String> m = new DefaultListModel<>();
-			m.add(m.getSize(), "CIAO");
-			m.add(m.getSize(), "CIAO");
+			DefaultTableModel m = new DefaultTableModel();
+			m.addColumn("ID");
+			m.addColumn("Data");
+			m.addColumn("Priorita");
+			m.addColumn("Argomento");
 			new Main(m).setVisible(true);
 			app.caselleElettronica = server.loginMail("lorenzo@gmail.com");
 			app.caselleElettronica.addCMailListener(new CMailController());
 			CasellaElettronicaBase caselleElettronica2 = server.loginMail("lorenzo2@gmail.com");
 			String[] destinatari = {"lorenzo@gmail.com"};
 			caselleElettronica2.sendMail(destinatari, 0, "testMail", "testo");
-			//app.caselleElettronica.getInfo();
-			//app.caselleElettronica.getMail(0);
+			for(Mail m2 : app.caselleElettronica.getAllMail()) {
+				Object[] row = {m2.id, m2.data, m2.priorita, m2.argomento};
+				m.addRow(row);
+			}
 		} catch (RemoteException e) {
 			System.err.println("Errore login server.");
 			e.printStackTrace();
