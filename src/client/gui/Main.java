@@ -1,4 +1,4 @@
-package client;
+package client.gui;
 
 import java.awt.BorderLayout;
 import java.util.Observable;

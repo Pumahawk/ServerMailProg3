@@ -1,4 +1,4 @@
-package client.gui;
+package client;
 
 import java.net.MalformedURLException;
 import java.rmi.Naming;
@@ -13,7 +13,7 @@ import java.util.concurrent.TimeUnit;
 import javax.swing.DefaultListModel;
 import javax.swing.JOptionPane;
 
-import client.Main;
+import client.gui.Main;
 import mail.CMailListener;
 import mail.CasellaElettronicaBase;
 import mail.CasellaElettronicaException;
