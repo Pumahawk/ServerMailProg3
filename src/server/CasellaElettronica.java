@@ -10,6 +10,7 @@ import java.util.concurrent.atomic.AtomicInteger;
 
 import javax.swing.event.EventListenerList;
 
+import mail.CMailListener;
 import mail.CasellaElettronicaBase;
 import mail.CasellaElettronicaException;
 import mail.CasellaElettronicaException.Error;
@@ -100,6 +101,7 @@ public class CasellaElettronica extends UnicastRemoteObject implements CasellaEl
 		this.mail.add(mail);
 		mailCounter.incrementAndGet();
 		fireMailRicevuta(new MailEvent(this, mail));
+		fireNuovaCMail(mail);
 	}
 
 	public void addMailListener(MailListener listener) {
@@ -119,5 +121,20 @@ public class CasellaElettronica extends UnicastRemoteObject implements CasellaEl
 	
 	void fireRequestPerformed(CasellaElettronicaEvent e) {
 		fireCasellaElettronicaListener(l -> l.actionPerformed(e));
+	}
+	
+	void fireNuovaCMail(Mail mail) {
+		for(CMailListener l :listeners.getListeners(CMailListener.class)) {
+			try {
+				l.nuovaMail(mail);
+			} catch (RemoteException e) {
+				e.printStackTrace();
+			}
+		}
+	}
+	@Override
+	public void addCMailListener(CMailListener l) throws RemoteException {
+		listeners.add(CMailListener.class, l);
+		
 	}
 }

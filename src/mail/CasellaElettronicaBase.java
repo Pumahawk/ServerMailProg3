@@ -8,4 +8,5 @@ public interface CasellaElettronicaBase extends Remote {
 	public Mail getMail(int id) throws RemoteException, CasellaElettronicaException;
 	public Mail[] getAllMail() throws RemoteException;
 	public InfoCasellaElettronica getInfo() throws RemoteException;
+	public void addCMailListener(CMailListener l) throws RemoteException; 
 }
