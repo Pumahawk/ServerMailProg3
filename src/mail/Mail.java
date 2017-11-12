@@ -4,43 +4,23 @@ import java.io.Serializable;
 
 public class Mail implements Serializable {
 	
-	public static class IDMail implements Serializable {
-		private static final long serialVersionUID = 1L;
-		public final int id;
-		public final String mittente;
-		public IDMail(int id, String mittente) {
-			super();
-			this.id = id;
-			this.mittente = mittente;
-		}
-		public boolean equals(Object o) {
-			//TODO TESTARE
-			if(!o.getClass().isInstance(this))
-				return false;
-			else {
-				IDMail i = (IDMail) o;
-				return (i.id == this.id && i.mittente.equals(this.mittente));
-			}
-		}
-	}
-	
 	private static final long serialVersionUID = 6350421221845772435L;
 	
-	public final IDMail id;
+	public final int id;
+	public final String data;
 	public final String mittente;
 	public final String[] destinatari;
-	public final String oggetto;
+	public final int priorita;
 	public final String testo;
+	public final String argomento;
 	
-	public Mail(IDMail id, String mittente, String[] destinatari, String oggetto, String testo) {
+	public Mail(int id, String data, String mittente, String[] destinatari, int priorita, String argomento, String testo) {
 		this.id = id;
 		this.mittente = mittente;
 		this.destinatari = destinatari;
-		this.oggetto = oggetto;
+		this.argomento = argomento;
 		this.testo = testo;
-	}
-	
-	public Mail(String mittente, String[] destinatari, String oggetto, String testo) {
-		this(null, mittente, destinatari, oggetto, testo);
+		this.priorita = priorita;
+		this.data = data;
 	}
 }

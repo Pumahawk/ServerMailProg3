@@ -15,7 +15,6 @@ import mail.CasellaElettronicaException;
 import mail.CasellaElettronicaException.Error;
 import mail.InfoCasellaElettronica;
 import mail.Mail;
-import mail.Mail.IDMail;
 import mail.MailEvent;
 import mail.MailListener;
 import server.CasellaElettronicaEvent;
@@ -55,8 +54,8 @@ public class CasellaElettronica extends UnicastRemoteObject implements CasellaEl
 		this.server = server;
 	}
 	@Override
-	public void sendMail(String[] destinatari, String oggetto, String testo) throws RemoteException, CasellaElettronicaException{
-		Mail mail = new Mail(this.indirizzo, destinatari, oggetto, testo);
+	public void sendMail(String[] destinatari,int priorita, String argomento, String testo) throws RemoteException, CasellaElettronicaException{
+		Mail mail = new Mail(this.mailCounter.get(), "dataTemp", this.indirizzo, destinatari, priorita, argomento, testo);
 		Set<String> elencoMail = this.server.caselleList.keySet();
 		synchronized(this.server.caselleList) {
 			for(String m : destinatari) {
@@ -71,14 +70,13 @@ public class CasellaElettronica extends UnicastRemoteObject implements CasellaEl
 	}
 
 	@Override
-	public Mail getMail(IDMail id) throws RemoteException, CasellaElettronicaException {
+	public Mail getMail(int id) throws RemoteException, CasellaElettronicaException {
 		//TODO TESTARE
 		CasellaElettronicaException error = new CasellaElettronicaException(Error.ID_MAIL_NOT_EXIST, "ID mail errato");;
-		if(!this.server.caselleList.containsKey(id.mittente))
-			throw error;
-		synchronized (this.server.caselleList.get(id.mittente).mail) {
-			for(Mail t : this.server.caselleList.get(id.mittente).mail)
-				if(t.id.equals(id)) {
+		
+		synchronized (this.mail) {
+			for(Mail t : this.mail)
+				if(t.id == id) {
 					fireRequestPerformed(new CasellaElettronicaEvent(this, CasellaElettronicaEvent.Code.GET_MAIL_REQUEST));
 					return t;
 				}
@@ -99,8 +97,7 @@ public class CasellaElettronica extends UnicastRemoteObject implements CasellaEl
 	}
 
 	public void addMail(Mail mail) {
-		this.mail.add(new Mail(new IDMail(mailCounter.get(), mail.mittente), mail.mittente, mail.destinatari,
-				mail.oggetto, mail.testo));
+		this.mail.add(mail);
 		mailCounter.incrementAndGet();
 		fireMailRicevuta(new MailEvent(this, mail));
 	}

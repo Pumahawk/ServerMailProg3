@@ -7,8 +7,6 @@ import java.rmi.RemoteException;
 
 import mail.CasellaElettronicaBase;
 import mail.CasellaElettronicaException;
-import mail.Mail;
-import mail.Mail.IDMail;
 import mail.ServerMailBase;
 
 public class ClientApp {
@@ -38,9 +36,9 @@ public class ClientApp {
 			server.createMail("lorenzo2@gmail.com");
 			app.caselleElettronica = server.loginMail(app.mail);
 			String[] destinatari = {"lorenzo@gmail.com"};
-			app.caselleElettronica.sendMail(destinatari, "testMail", "testo");
+			app.caselleElettronica.sendMail(destinatari, 0, "testMail", "testo");
 			app.caselleElettronica.getInfo();
-			app.caselleElettronica.getMail(new IDMail(0, "lorenzo@gmail.com"));
+			app.caselleElettronica.getMail(0);
 		} catch (RemoteException e) {
 			System.err.println("Errore login server.");
 			e.printStackTrace();
