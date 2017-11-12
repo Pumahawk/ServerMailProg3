@@ -1,11 +1,19 @@
-package client;
+package client.gui;
 
 import java.net.MalformedURLException;
 import java.rmi.Naming;
 import java.rmi.NotBoundException;
 import java.rmi.RemoteException;
 import java.rmi.server.UnicastRemoteObject;
+import java.util.concurrent.ExecutorService;
+import java.util.concurrent.LinkedBlockingQueue;
+import java.util.concurrent.ThreadPoolExecutor;
+import java.util.concurrent.TimeUnit;
 
+import javax.swing.DefaultListModel;
+import javax.swing.JOptionPane;
+
+import client.Main;
 import mail.CMailListener;
 import mail.CasellaElettronicaBase;
 import mail.CasellaElettronicaException;
@@ -13,6 +21,8 @@ import mail.Mail;
 import mail.ServerMailBase;
 
 public class ClientApp {
+	public final static ExecutorService exeService = new ThreadPoolExecutor(3, 3, 1, TimeUnit.SECONDS, new LinkedBlockingQueue<>());;
+	
 	
 	public static class CMailController extends UnicastRemoteObject implements CMailListener  {
 
@@ -24,7 +34,10 @@ public class ClientApp {
 
 		@Override
 		public void nuovaMail(Mail mail) throws RemoteException {
-			System.out.print("Mail ricevuta: " + mail.mittente);	
+			System.out.println("ATTENZIONE");
+			System.out.println("Hai ricevuto una nuova mail.");
+			System.out.println("Mittente: " + mail.mittente);	
+			System.out.println("Oggetto: " + mail.argomento);
 			
 		}
 		
@@ -44,20 +57,22 @@ public class ClientApp {
 		try {
 			server = (ServerMailBase) Naming.lookup("//localhost/AppServer");
 		} catch (MalformedURLException | RemoteException | NotBoundException e) {
-			System.err.println("Errore collegamento al server.");
-			System.err.println("Controllare che il server sia raggiungibile");
-			e.printStackTrace();
+			JOptionPane.showMessageDialog(null, "Controllare che il server sia raggiungibile.",
+					"Errore collegamento al server.", JOptionPane.ERROR_MESSAGE);
 			server = null;
 			System.exit(-1);
 		}
 		try {
-			server.createMail("lorenzo@gmail.com");
-			server.createMail("lorenzo2@gmail.com");
+
+			DefaultListModel<String> m = new DefaultListModel<>();
+			m.add(m.getSize(), "CIAO");
+			m.add(m.getSize(), "CIAO");
+			new Main(m).setVisible(true);
 			app.caselleElettronica = server.loginMail("lorenzo@gmail.com");
+			app.caselleElettronica.addCMailListener(new CMailController());
 			CasellaElettronicaBase caselleElettronica2 = server.loginMail("lorenzo2@gmail.com");
-			caselleElettronica2.addCMailListener(new CMailController());
-			String[] destinatari = {"lorenzo2@gmail.com"};
-			app.caselleElettronica.sendMail(destinatari, 0, "testMail", "testo");
+			String[] destinatari = {"lorenzo@gmail.com"};
+			caselleElettronica2.sendMail(destinatari, 0, "testMail", "testo");
 			//app.caselleElettronica.getInfo();
 			//app.caselleElettronica.getMail(0);
 		} catch (RemoteException e) {

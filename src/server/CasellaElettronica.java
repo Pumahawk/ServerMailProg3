@@ -125,11 +125,13 @@ public class CasellaElettronica extends UnicastRemoteObject implements CasellaEl
 	
 	void fireNuovaCMail(Mail mail) {
 		for(CMailListener l :listeners.getListeners(CMailListener.class)) {
-			try {
-				l.nuovaMail(mail);
-			} catch (RemoteException e) {
-				e.printStackTrace();
-			}
+			ServerApp.exeService.execute(() -> {
+				try {
+					l.nuovaMail(mail);
+				} catch (RemoteException e) {
+					this.listeners.remove(CMailListener.class, l);
+				}
+			});
 		}
 	}
 	@Override

@@ -1,6 +1,11 @@
 package server;
 
 import java.rmi.RemoteException;
+import java.util.concurrent.ExecutorService;
+import java.util.concurrent.Executors;
+import java.util.concurrent.LinkedBlockingQueue;
+import java.util.concurrent.ThreadPoolExecutor;
+import java.util.concurrent.TimeUnit;
 
 import javax.swing.text.Document;
 import javax.swing.text.PlainDocument;
@@ -8,10 +13,12 @@ import javax.swing.text.PlainDocument;
 import server.gui.LoggerGui;
 
 public class ServerApp {
-
+	
+	public final static ExecutorService exeService = new ThreadPoolExecutor(3, 3, 1, TimeUnit.SECONDS, new LinkedBlockingQueue<>());;
 	
 	public static void main(String[] args) {
 		ServerMail serverApp;
+		
 		Document logDoc = new PlainDocument();
 		LoggerGui lg = new LoggerGui(logDoc);
 		try {
