@@ -16,6 +16,11 @@ public class ServerApp {
 		LoggerGui lg = new LoggerGui(logDoc);
 		try {
 			serverApp = new ServerMail();
+			
+			serverApp.createMail("lorenzo@gmail.com");
+			serverApp.createMail("lorenzo2@gmail.com");
+			serverApp.createMail("lorenzo3@gmail.com");
+			
 			serverApp.addServerErrorListener(new ServerErrorController());
 			serverApp.addServerListener(new ServerLogger(logDoc));
 		} catch (RemoteException e) {
