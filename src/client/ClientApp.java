@@ -10,51 +10,28 @@ import java.util.concurrent.LinkedBlockingQueue;
 import java.util.concurrent.ThreadPoolExecutor;
 import java.util.concurrent.TimeUnit;
 
-import javax.swing.DefaultListModel;
 import javax.swing.JOptionPane;
-import javax.swing.table.DefaultTableModel;
-import javax.swing.table.TableModel;
 
 import client.gui.Main;
-import mail.CMailListener;
 import mail.CasellaElettronicaBase;
-import mail.CasellaElettronicaException;
-import mail.Mail;
 import mail.ServerMailBase;
 
 public class ClientApp {
 	public final static ExecutorService exeService = new ThreadPoolExecutor(3, 3, 1, TimeUnit.SECONDS, new LinkedBlockingQueue<>());
 	
-	
-	public static class CMailController extends UnicastRemoteObject implements CMailListener  {
-
-		private static final long serialVersionUID = 1L;
-
-		protected CMailController() throws RemoteException {
-			super();
-		}
-
-		@Override
-		public void nuovaMail(Mail mail) throws RemoteException {
-			System.out.println("ATTENZIONE");
-			System.out.println("Hai ricevuto una nuova mail.");
-			System.out.println("Mittente: " + mail.mittente);	
-			System.out.println("Oggetto: " + mail.argomento);
-		}
-		
-	}
-	
 	String mail;
 	CasellaElettronicaBase caselleElettronica;
 	
 	
-	public ClientApp(String mail) {
+	public ClientApp(String mail, CasellaElettronicaBase c) {
 		this.mail = mail;
+		this.caselleElettronica = c;
 	}
 	
 	public static void main(String[] args) {
 		ServerMailBase server;
-		ClientApp app = new ClientApp("lorenzo@gmail.com");
+		ElencoMail modelloElencoMail = new ElencoMail();
+		MailAppController controller = new DefaultMailAppController(modelloElencoMail);
 		try {
 			server = (ServerMailBase) Naming.lookup("//localhost/AppServer");
 		} catch (MalformedURLException | RemoteException | NotBoundException e) {
@@ -64,30 +41,17 @@ public class ClientApp {
 			System.exit(-1);
 		}
 		try {
-
-			DefaultTableModel m = new DefaultTableModel();
-			m.addColumn("ID");
-			m.addColumn("Data");
-			m.addColumn("Priorita");
-			m.addColumn("Argomento");
-			new Main(m).setVisible(true);
-			app.caselleElettronica = server.loginMail("lorenzo@gmail.com");
-			app.caselleElettronica.addCMailListener(new CMailController());
-			CasellaElettronicaBase caselleElettronica2 = server.loginMail("lorenzo2@gmail.com");
-			String[] destinatari = {"lorenzo@gmail.com"};
-			caselleElettronica2.sendMail(destinatari, 0, "testMail", "testo");
-			for(Mail m2 : app.caselleElettronica.getAllMail()) {
-				Object[] row = {m2.id, m2.data, m2.priorita, m2.argomento};
-				m.addRow(row);
-			}
+			String mainMail = JOptionPane.showInputDialog("Inserire la mail principale.");
+			ClientApp app = new ClientApp(mainMail, server.loginMail(mainMail));
+			Main main = new Main(app.caselleElettronica.getInfo(), controller);
+			modelloElencoMail.addObserver(main);
+			main.setVisible(true);
+		
 		} catch (RemoteException e) {
 			System.err.println("Errore login server.");
 			e.printStackTrace();
 			server = null;
 			System.exit(-1);
-		} catch (CasellaElettronicaException e) {
-			System.err.println("ERROR CODE: " + e.code);
-			e.printStackTrace();
 		}
 		
 		
