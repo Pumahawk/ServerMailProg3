@@ -15,6 +15,7 @@ public class ElencoMail extends Observable {
 
 	public void add(Mail mail) {
 		this.elencoMail.add(mail);
+		this.setChanged();
 		this.notifyObservers(mail);
 	}
 

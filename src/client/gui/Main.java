@@ -36,7 +36,11 @@ public class Main extends JFrame implements Observer{
 		setDefaultCloseOperation(EXIT_ON_CLOSE);
 		this.setLayout(new BorderLayout());
 		
-		this.tabellaMail = new DefaultTableModel();
+		this.tabellaMail = new DefaultTableModel() {
+		    public boolean isCellEditable(int row, int col)
+		        { return false; }
+		};
+
 		this.tabellaMail.addColumn("ID");
 		this.tabellaMail.addColumn("Data");
 		this.tabellaMail.addColumn("Priorita");
@@ -44,9 +48,13 @@ public class Main extends JFrame implements Observer{
 		
 		JPanel p = new JPanel();
 		JTable t = new JTable(this.tabellaMail);
-		t.setEnabled(false);
 		JScrollPane sp = new JScrollPane(t);
-		p.add(new JButton("Crea mail"));
+		
+		JButton creaMailButton = new JButton("Crea mail");
+		creaMailButton.addActionListener((e) -> controller.creaMailAction());
+		
+		p.add(creaMailButton);
+		
 		add(new JLabel("Elenco mail"), BorderLayout.NORTH);
 		add(sp, BorderLayout.CENTER);
 		add(p, BorderLayout.SOUTH);
@@ -55,12 +63,10 @@ public class Main extends JFrame implements Observer{
 	@Override
 	public void update(Observable o, Object arg) {
 		addMail((Mail) arg);
-		
-		
 	}
 
 	public void addMail(Mail m) {
 		Object[] row = { m.id, m.data, m.priorita, m.argomento };
-		tabellaMail.addRow(row);
+		tabellaMail.insertRow(0, row);
 	}
 }
