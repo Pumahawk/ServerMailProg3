@@ -102,7 +102,7 @@ public class CasellaElettronica extends UnicastRemoteObject implements CasellaEl
 		this.mail.add(m);
 		mailCounter.incrementAndGet();
 		fireMailRicevuta(new MailEvent(this, mail));
-		fireNuovaCMail(mail);
+		fireNuovaCMail(m);
 	}
 
 	public void addMailListener(MailListener listener) {
