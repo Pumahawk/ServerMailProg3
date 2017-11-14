@@ -4,6 +4,7 @@ import java.rmi.RemoteException;
 import java.rmi.server.UnicastRemoteObject;
 import java.text.DateFormat;
 import java.text.SimpleDateFormat;
+import java.util.ArrayList;
 import java.util.Collections;
 import java.util.Date;
 import java.util.LinkedList;
@@ -60,6 +61,13 @@ public class CasellaElettronica extends UnicastRemoteObject implements CasellaEl
 	@Override
 	public void sendMail(String[] destinatari,int priorita, String argomento, String testo) throws RemoteException, CasellaElettronicaException{
 		DateFormat df = new SimpleDateFormat("yyyy/M/dd HH:mm:ss");
+		
+		ArrayList<String> ar = new ArrayList<>();
+		for(String s : destinatari)
+			if(!ar.contains(s))
+				ar.add(s);
+		destinatari = ar.toArray(new String[0]);
+		
 		Mail mail = new Mail(this.mailCounter.get(), df.format(new Date()), this.indirizzo, destinatari, priorita, argomento, testo);
 		Set<String> elencoMail = this.server.caselleList.keySet();
 		synchronized(this.server.caselleList) {
