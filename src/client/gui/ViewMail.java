@@ -3,6 +3,9 @@ package client.gui;
 import java.awt.BorderLayout;
 import java.awt.FlowLayout;
 import java.awt.GridLayout;
+import java.util.ArrayList;
+import java.util.Collections;
+import java.util.StringJoiner;
 
 import javax.swing.BoxLayout;
 import javax.swing.JButton;
@@ -10,6 +13,7 @@ import javax.swing.JComboBox;
 import javax.swing.JFrame;
 import javax.swing.JLabel;
 import javax.swing.JPanel;
+import javax.swing.JScrollBar;
 import javax.swing.JScrollPane;
 import javax.swing.JTextArea;
 import javax.swing.JTextField;
@@ -18,47 +22,60 @@ import javax.swing.border.EmptyBorder;
 import client.MailAppController;
 import mail.Mail;
 
-public class CreaMailFrame extends JFrame {
+public class ViewMail extends JFrame {
 	final MailAppController controller;
 	public final JTextField oggetto;
+	public final JTextField mittente;
 	public final JTextField destinatari;
-	public final JComboBox<Integer> priorita;
+	public final JTextField priorita;
 	public final JTextArea testo;
-	
-	public CreaMailFrame(MailAppController controller) {
-		
+
+	public ViewMail(Mail m, MailAppController controller) {
+
 		this.controller = controller;
 		
-		
-		JButton inviaButton = new JButton("Invia");
-		JButton annullaButton = new JButton("Annulla");
 
+		JLabel mittenteLabel = new JLabel("Mittente: ");
+		this.mittente = new JTextField(20);
+		this.mittente.setText(m.mittente);
+		this.mittente.setEditable(false);
+		
 		JLabel destinatariLabel = new JLabel("Destinatari: ");
 		this.destinatari = new JTextField(20);
+		String dest = m.destinatari[0];
+		for(int i = 1; i < m.destinatari.length; i++) {
+			dest += ";" + m.destinatari[i];
+		}
+		this.destinatari.setText(dest);
+		this.destinatari.setEditable(false);
 
 		JLabel oggettoLabel = new JLabel("Oggetto: ");
 		this.oggetto = new JTextField(20);
+		this.oggetto.setText(m.argomento);
+		this.oggetto.setEditable(false);
 		
 		JLabel prioritaLabel = new JLabel("Priorita: ");
-		Integer[] pr = {1,2,3};
-		this.priorita = new JComboBox<>(pr);
+		this.priorita = new JTextField(1);
+		this.priorita.setText(m.priorita + "");
+		this.priorita.setEditable(false);
 		
 		JLabel testoLabel = new JLabel("Testo: ");
-		this.testo = new JTextArea(20, 40);
+		this.testo = new JTextArea(25, 45);
+		this.testo.setText(m.testo);
+		this.testo.setEditable(false);
 		JScrollPane srb = new JScrollPane(this.testo);
-		
-		inviaButton.addActionListener((e) -> controller.inviaMailAction(this));
-		annullaButton.addActionListener((e) -> setVisible(false));
 
 		JPanel center = new JPanel();
 		center.setLayout(new BoxLayout(center, BoxLayout.PAGE_AXIS));
 
-		JPanel centerRow0Base = new JPanel(new GridLayout(2,2));
+		JPanel centerRow0Base = new JPanel(new GridLayout(3, 2));
 		JPanel centerRow0 = new JPanel();
 		JPanel centerRow1 = new JPanel();
 		JPanel centerRow2 = new JPanel(new FlowLayout(FlowLayout.LEADING));
 		JPanel centerRow3 = new JPanel();
 
+		centerRow0Base.add(mittenteLabel);
+		centerRow0Base.add(this.mittente);
 		centerRow0Base.add(oggettoLabel);
 		centerRow0Base.add(this.oggetto);
 		centerRow0Base.add(destinatariLabel);
@@ -78,27 +95,24 @@ public class CreaMailFrame extends JFrame {
 		center.add(centerRow1);
 		center.add(centerRow2);
 		center.add(centerRow3);
-		
+		JButton rispondiButton = new JButton("Rispondi");
+		rispondiButton.addActionListener(e -> controller.rispondiMailAction(m));
+		JButton rispondiATuttiButton = new JButton("Rispondi a tutti");
+		JButton innoltraButton = new JButton("Innoltra");
+		JButton cancellaButton = new JButton("Elimina");
+		JButton annullaButton = new JButton("Annulla");
 		JPanel south = new JPanel();
-		south.add(inviaButton);
+		south.add(rispondiButton);
+		south.add(rispondiATuttiButton);
+		south.add(innoltraButton);
+		south.add(cancellaButton);
 		south.add(annullaButton);
 		
-		this.setTitle("Crea mail");
+		this.setTitle("ViewMail");
 		this.setLayout(new BorderLayout());
 		add(center, BorderLayout.CENTER);
 		add(south, BorderLayout.SOUTH);
 		this.setResizable(false);
 		this.pack();
-	}
-	public CreaMailFrame(Mail m, MailAppController controller, String[] destinatari) {
-		this(controller);
-		String dest = destinatari[0];
-		for(int i = 1; i < destinatari.length; i++) {
-			dest += ";" + destinatari[i];
-		}
-		this.destinatari.setText(dest);
-		this.oggetto.setText(m.argomento);
-		this.priorita.setSelectedItem(m.priorita);
-		this.testo.setText(m.testo);
 	}
 }

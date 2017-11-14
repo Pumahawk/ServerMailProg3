@@ -4,6 +4,8 @@ import java.util.LinkedList;
 import java.util.List;
 import java.util.Observable;
 
+import javax.sql.rowset.spi.SyncResolver;
+
 import mail.Mail;
 
 public class ElencoMail extends Observable {
@@ -13,13 +15,13 @@ public class ElencoMail extends Observable {
 		this.elencoMail = new LinkedList<>();
 	}
 
-	public void add(Mail mail) {
+	public synchronized void add(Mail mail) {
 		this.elencoMail.add(mail);
 		this.setChanged();
 		this.notifyObservers(mail);
 	}
 
-	public void remove(int id) {
+	public synchronized void remove(int id) {
 		for (Mail m : this.elencoMail) {
 			if (m.id == id) {
 				this.elencoMail.remove(m);
@@ -29,7 +31,16 @@ public class ElencoMail extends Observable {
 		}
 	}
 	
-	public Mail[] getAll() {
+	public synchronized Mail[] getAll() {
 		return this.elencoMail.toArray(new Mail[0]);
+	}
+
+	public synchronized Mail getById(int id) {
+		for(Mail m : elencoMail) {
+			if(m.id == id) {
+				return m;
+			}
+		}
+		return null;
 	}
 }

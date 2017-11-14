@@ -16,6 +16,7 @@ import javax.swing.ListModel;
 import javax.swing.table.DefaultTableModel;
 import javax.swing.table.TableModel;
 
+import client.DefaultMailAppController;
 import client.ElencoMail;
 import client.MailAppController;
 import mail.CasellaElettronicaBase;
@@ -25,9 +26,9 @@ import mail.Mail;
 public class Main extends JFrame implements Observer{
 	
 	final DefaultTableModel tabellaMail;
-	final MailAppController controller;
+	final DefaultMailAppController controller;
 	
-	public Main(InfoCasellaElettronica casellaElettronica, MailAppController controller) {
+	public Main(InfoCasellaElettronica casellaElettronica, DefaultMailAppController controller) {
 
 		this.controller = controller;
 		
@@ -48,6 +49,7 @@ public class Main extends JFrame implements Observer{
 		
 		JPanel p = new JPanel();
 		JTable t = new JTable(this.tabellaMail);
+		t.addMouseListener(controller.new ClickMailController());
 		JScrollPane sp = new JScrollPane(t);
 		
 		JButton creaMailButton = new JButton("Crea mail");

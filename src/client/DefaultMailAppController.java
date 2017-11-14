@@ -1,15 +1,21 @@
 package client;
 
 import java.awt.Color;
+import java.awt.event.MouseAdapter;
+import java.awt.event.MouseEvent;
+import java.awt.event.MouseListener;
 import java.io.Serializable;
 import java.rmi.RemoteException;
 import java.rmi.server.UnicastRemoteObject;
+import java.util.ArrayList;
 
 import javax.swing.BorderFactory;
 import javax.swing.JFrame;
 import javax.swing.JOptionPane;
+import javax.swing.JTable;
 
 import client.gui.CreaMailFrame;
+import client.gui.ViewMail;
 import mail.CMailListener;
 import mail.CasellaElettronicaBase;
 import mail.CasellaElettronicaException;
@@ -20,6 +26,18 @@ public class DefaultMailAppController implements MailAppController {
 
 	final ElencoMail listaMail;
 	final CasellaElettronicaBase casellaElettronica;
+	
+	public class ClickMailController extends MouseAdapter {
+
+		@Override
+		public void mouseClicked(MouseEvent e) {
+			JTable t = (JTable) e.getSource();
+			int row = t.rowAtPoint(e.getPoint());
+			int id = (Integer) t.getModel().getValueAt(row, 0);
+			Mail m = listaMail.getById(id);
+			apriMailAction(m);
+		}
+	}
 	
 	public class CasellaElettronicaListener extends UnicastRemoteObject implements CMailListener {
 
@@ -33,6 +51,7 @@ public class DefaultMailAppController implements MailAppController {
 		}
 		
 	}
+	
 	
 	public DefaultMailAppController(CasellaElettronicaBase casela, ElencoMail elenco) {
 		this.listaMail = elenco;
@@ -78,6 +97,26 @@ public class DefaultMailAppController implements MailAppController {
 				mailFrame.destinatari.setBorder(BorderFactory.createLineBorder(Color.RED));
 			}
 		}
+	}
+	@Override
+	public void apriMailAction(Mail m) {
+		new ViewMail(m, this).setVisible(true);
+	}
+	@Override
+	public void rispondiMailAction(Mail m) {
+		
+		ArrayList<String> dest = new ArrayList<>(m.destinatari.length);
+		for(String d : m.destinatari) {
+			try {
+				if(!d.equals(this.casellaElettronica.getInfo().indirizzo))
+					dest.add(d);
+			} catch (RemoteException e) {
+				e.printStackTrace();
+				System.exit(-1);
+			}
+		}
+		dest.add(m.mittente);
+		new CreaMailFrame(m, this, dest.toArray(new String[0])).setVisible(true);
 	}
 
 }
