@@ -48,6 +48,7 @@ public class DefaultMailAppController implements MailAppController {
 		@Override
 		public void nuovaMail(Mail mail) throws RemoteException {
 			listaMail.add(mail);
+			JOptionPane.showMessageDialog(null, "Hai ricevuto un nuovo messaggio.", "Message", JOptionPane.INFORMATION_MESSAGE);
 		}
 		
 	}
@@ -84,7 +85,6 @@ public class DefaultMailAppController implements MailAppController {
 			
 			casellaElettronica.sendMail(destinatari, priorita, oggetto, testo);
 			mailFrame.setVisible(false);
-			JOptionPane.showMessageDialog(null, "Hai ricevuto un nuovo messaggio.", "Message", JOptionPane.INFORMATION_MESSAGE);
 			
 		} catch (RemoteException e) {
 			JOptionPane.showMessageDialog(null, "Controllare che il server sia raggiungibile.",
