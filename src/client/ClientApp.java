@@ -31,44 +31,48 @@ public class ClientApp {
 	}
 	
 	public static void main(String[] args) {
-		ServerMailBase server;
-		ElencoMail modelloElencoMail = new ElencoMail();
 		try {
+			ServerMailBase server;
+			ElencoMail modelloElencoMail = new ElencoMail();
 			server = (ServerMailBase) Naming.lookup("//localhost/AppServer");
+			
+			for(boolean open = false; !open;) {
+				try {
+					String mainMail = JOptionPane.showInputDialog("Inserire la mail principale.");
+					if(mainMail != null){
+						
+						ClientApp app = new ClientApp(mainMail, server.loginMail(mainMail));
+						DefaultMailAppController controller = new DefaultMailAppController(app.caselleElettronica, modelloElencoMail);
+						
+						if(app.caselleElettronica == null)
+							throw new CasellaElettronicaException(Error.CASELLA_NOT_FOUND, "Casella elettronica non trovata");
+						else
+							open = true;
+						
+						Main main = new Main(app.caselleElettronica.getInfo(), controller);
+						modelloElencoMail.addObserver(main);
+						
+						for(Mail m : app.caselleElettronica.getAllMail())
+							modelloElencoMail.add(m);
+						
+						app.caselleElettronica.addCMailListener(controller.new CasellaElettronicaListener());
+						main.setVisible(true);
+					}
+				} catch (RemoteException e) {
+					JOptionPane.showMessageDialog(null, "Errore collegamento al server.",
+							"Errore server.", JOptionPane.ERROR_MESSAGE);
+					System.exit(-1);
+				} catch (CasellaElettronicaException e) {
+					if(e.code == Error.CASELLA_NOT_FOUND)
+						JOptionPane.showMessageDialog(null, "Impossibile aprire la mail.",
+								"Errore apertura mail.", JOptionPane.ERROR_MESSAGE);
+				}
+			}
 		} catch (MalformedURLException | RemoteException | NotBoundException e) {
 			JOptionPane.showMessageDialog(null, "Controllare che il server sia raggiungibile.",
 					"Errore collegamento al server.", JOptionPane.ERROR_MESSAGE);
-			server = null;
 			System.exit(-1);
 		}
-		for(boolean open = false; !open;)
-			try {
-				String mainMail = JOptionPane.showInputDialog("Inserire la mail principale.");
-				if(mainMail == null)
-					break;
-				ClientApp app = new ClientApp(mainMail, server.loginMail(mainMail));
-				DefaultMailAppController controller = new DefaultMailAppController(app.caselleElettronica, modelloElencoMail);
-				if(app.caselleElettronica == null)
-					throw new CasellaElettronicaException(Error.CASELLA_NOT_FOUND, "Casella elettronica non trovata");
-				open = true;
-				Main main = new Main(app.caselleElettronica.getInfo(), controller);
-				modelloElencoMail.addObserver(main);
-				for(Mail m : app.caselleElettronica.getAllMail())
-					modelloElencoMail.add(m);
-				app.caselleElettronica.addCMailListener(controller.new CasellaElettronicaListener());
-				main.setVisible(true);
-			
-			} catch (RemoteException e) {
-				System.err.println("Errore login server.");
-				e.printStackTrace();
-				server = null;
-				System.exit(-1);
-			} catch (CasellaElettronicaException e) {
-				if(e.code == Error.CASELLA_NOT_FOUND)
-					JOptionPane.showMessageDialog(null, "Impossibile aprire la mail.",
-							"Errore apertura mail.", JOptionPane.ERROR_MESSAGE);
-			}
-		
 		
 	}
 }
