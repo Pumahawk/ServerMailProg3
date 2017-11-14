@@ -7,6 +7,7 @@ public interface MailAppController {
 	
 	public void creaMailAction();
 	public void rispondiMailAction(Mail m);
+	public void rispondiATuttiMailAction(Mail m);
 	public void cancellaMailAction(int id);
 	public void innoltraMailAction(Mail mail, String [] destinatari);
 	public void inviaMailAction(CreaMailFrame frame);

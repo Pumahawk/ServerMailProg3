@@ -98,9 +98,11 @@ public class ViewMail extends JFrame {
 		JButton rispondiButton = new JButton("Rispondi");
 		rispondiButton.addActionListener(e -> controller.rispondiMailAction(m));
 		JButton rispondiATuttiButton = new JButton("Rispondi a tutti");
+		rispondiATuttiButton.addActionListener(e -> controller.rispondiATuttiMailAction(m));
 		JButton innoltraButton = new JButton("Innoltra");
 		JButton cancellaButton = new JButton("Elimina");
 		JButton annullaButton = new JButton("Annulla");
+		annullaButton.addActionListener(e -> setVisible(false));
 		JPanel south = new JPanel();
 		south.add(rispondiButton);
 		south.add(rispondiATuttiButton);

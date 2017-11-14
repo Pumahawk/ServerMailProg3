@@ -105,6 +105,13 @@ public class DefaultMailAppController implements MailAppController {
 	@Override
 	public void rispondiMailAction(Mail m) {
 		
+		String[] dest = {m.mittente};
+		new CreaMailFrame(m, this, dest).setVisible(true);
+	
+	}
+	@Override
+	public void rispondiATuttiMailAction(Mail m) {
+		
 		ArrayList<String> dest = new ArrayList<>(m.destinatari.length);
 		for(String d : m.destinatari) {
 			try {
@@ -117,6 +124,7 @@ public class DefaultMailAppController implements MailAppController {
 		}
 		dest.add(m.mittente);
 		new CreaMailFrame(m, this, dest.toArray(new String[0])).setVisible(true);
+		
 	}
 
 }
