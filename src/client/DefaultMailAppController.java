@@ -76,8 +76,8 @@ public class DefaultMailAppController implements MailAppController {
 	}
 
 	@Override
-	public void innoltraMailAction(Mail mail, String[] destinatary) {
-		// TODO Auto-generated method stub
+	public void innoltraMailAction(Mail mail, String[] destinatari) {
+		new CreaMailFrame(mail, this, destinatari).setVisible(true);
 		
 	}
 	@Override

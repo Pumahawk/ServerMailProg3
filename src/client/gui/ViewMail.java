@@ -12,6 +12,7 @@ import javax.swing.JButton;
 import javax.swing.JComboBox;
 import javax.swing.JFrame;
 import javax.swing.JLabel;
+import javax.swing.JOptionPane;
 import javax.swing.JPanel;
 import javax.swing.JScrollBar;
 import javax.swing.JScrollPane;
@@ -100,6 +101,13 @@ public class ViewMail extends JFrame {
 		JButton rispondiATuttiButton = new JButton("Rispondi a tutti");
 		rispondiATuttiButton.addActionListener(e -> controller.rispondiATuttiMailAction(m));
 		JButton innoltraButton = new JButton("Innoltra");
+		innoltraButton.addActionListener(e -> {
+			String desti = JOptionPane.showInputDialog("Inserire destinatari.");
+			if(desti == null)
+				return;
+			controller.innoltraMailAction(m, desti.split(";"));
+			setVisible(false);
+		});
 		JButton cancellaButton = new JButton("Elimina");
 		cancellaButton.addActionListener(e -> {
 			controller.cancellaMailAction(m.id);
