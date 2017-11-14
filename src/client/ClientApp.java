@@ -4,7 +4,6 @@ import java.net.MalformedURLException;
 import java.rmi.Naming;
 import java.rmi.NotBoundException;
 import java.rmi.RemoteException;
-import java.rmi.server.UnicastRemoteObject;
 import java.util.concurrent.ExecutorService;
 import java.util.concurrent.LinkedBlockingQueue;
 import java.util.concurrent.ThreadPoolExecutor;
@@ -12,7 +11,6 @@ import java.util.concurrent.TimeUnit;
 
 import javax.swing.JOptionPane;
 
-import client.DefaultMailAppController.CasellaElettronicaListener;
 import client.gui.Main;
 import mail.CasellaElettronicaBase;
 import mail.CasellaElettronicaException;

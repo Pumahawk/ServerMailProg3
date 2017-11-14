@@ -4,27 +4,24 @@ import java.awt.BorderLayout;
 import java.util.Observable;
 import java.util.Observer;
 
-import javax.swing.DefaultListModel;
 import javax.swing.JButton;
 import javax.swing.JFrame;
 import javax.swing.JLabel;
-import javax.swing.JList;
 import javax.swing.JPanel;
 import javax.swing.JScrollPane;
 import javax.swing.JTable;
-import javax.swing.ListModel;
 import javax.swing.table.DefaultTableModel;
-import javax.swing.table.TableModel;
-
 import client.DefaultMailAppController;
 import client.ElencoMail;
-import client.MailAppController;
-import mail.CasellaElettronicaBase;
 import mail.InfoCasellaElettronica;
 import mail.Mail;
 
 public class Main extends JFrame implements Observer{
 	
+	/**
+	 * 
+	 */
+	private static final long serialVersionUID = 6553295146105580140L;
 	final DefaultTableModel tabellaMail;
 	final DefaultMailAppController controller;
 	
@@ -38,7 +35,12 @@ public class Main extends JFrame implements Observer{
 		this.setLayout(new BorderLayout());
 		
 		this.tabellaMail = new DefaultTableModel() {
-		    public boolean isCellEditable(int row, int col)
+		    /**
+			 * 
+			 */
+			private static final long serialVersionUID = -594632327419624115L;
+
+			public boolean isCellEditable(int row, int col)
 		        { return false; }
 		};
 

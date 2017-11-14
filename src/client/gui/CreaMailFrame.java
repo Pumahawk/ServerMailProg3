@@ -19,6 +19,10 @@ import client.MailAppController;
 import mail.Mail;
 
 public class CreaMailFrame extends JFrame {
+	/**
+	 * 
+	 */
+	private static final long serialVersionUID = 3258612651824464621L;
 	final MailAppController controller;
 	public final JTextField oggetto;
 	public final JTextField destinatari;

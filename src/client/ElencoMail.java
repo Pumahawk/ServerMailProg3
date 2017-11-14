@@ -4,8 +4,6 @@ import java.util.LinkedList;
 import java.util.List;
 import java.util.Observable;
 
-import javax.sql.rowset.spi.SyncResolver;
-
 import mail.Mail;
 
 public class ElencoMail extends Observable {

@@ -3,8 +3,6 @@ package client;
 import java.awt.Color;
 import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
-import java.awt.event.MouseListener;
-import java.io.Serializable;
 import java.rmi.RemoteException;
 import java.rmi.server.UnicastRemoteObject;
 import java.util.ArrayList;
@@ -40,6 +38,11 @@ public class DefaultMailAppController implements MailAppController {
 	}
 	
 	public class CasellaElettronicaListener extends UnicastRemoteObject implements CMailListener {
+
+		/**
+		 * 
+		 */
+		private static final long serialVersionUID = -1358920728364874133L;
 
 		protected CasellaElettronicaListener() throws RemoteException {
 			super();

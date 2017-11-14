@@ -3,18 +3,12 @@ package client.gui;
 import java.awt.BorderLayout;
 import java.awt.FlowLayout;
 import java.awt.GridLayout;
-import java.util.ArrayList;
-import java.util.Collections;
-import java.util.StringJoiner;
-
 import javax.swing.BoxLayout;
 import javax.swing.JButton;
-import javax.swing.JComboBox;
 import javax.swing.JFrame;
 import javax.swing.JLabel;
 import javax.swing.JOptionPane;
 import javax.swing.JPanel;
-import javax.swing.JScrollBar;
 import javax.swing.JScrollPane;
 import javax.swing.JTextArea;
 import javax.swing.JTextField;
@@ -24,6 +18,10 @@ import client.MailAppController;
 import mail.Mail;
 
 public class ViewMail extends JFrame {
+	/**
+	 * 
+	 */
+	private static final long serialVersionUID = -1347084796089468111L;
 	final MailAppController controller;
 	public final JTextField oggetto;
 	public final JTextField mittente;
