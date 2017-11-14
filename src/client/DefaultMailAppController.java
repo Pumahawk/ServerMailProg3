@@ -19,6 +19,7 @@ import mail.CasellaElettronicaBase;
 import mail.CasellaElettronicaException;
 import mail.Mail;
 import mail.CasellaElettronicaException.Error;
+import mail.InfoCasellaElettronica;
 
 public class DefaultMailAppController implements MailAppController {
 
@@ -72,8 +73,13 @@ public class DefaultMailAppController implements MailAppController {
 		try {
 			this.casellaElettronica.deleteMail(id);
 			this.listaMail.remove(id);
-		} catch (RemoteException | CasellaElettronicaException e) {
+		} catch (RemoteException e) {
 			e.printStackTrace();
+			JOptionPane.showMessageDialog(null, "Impossibile accedere al server.",
+					"Errore server.", JOptionPane.ERROR_MESSAGE);
+		} catch (CasellaElettronicaException e) {
+			JOptionPane.showMessageDialog(null, "Id messaggio impossibile da trovare.",
+					"Impossibile ancellare il messattio.", JOptionPane.ERROR_MESSAGE);
 		}
 		
 	}
@@ -90,7 +96,6 @@ public class DefaultMailAppController implements MailAppController {
 		Integer priorita = (Integer) mailFrame.priorita.getSelectedItem();
 		String testo = mailFrame.testo.getText();
 		try {
-			
 			casellaElettronica.sendMail(destinatari, priorita, oggetto, testo);
 			mailFrame.setVisible(false);
 			
@@ -119,20 +124,21 @@ public class DefaultMailAppController implements MailAppController {
 	}
 	@Override
 	public void rispondiATuttiMailAction(Mail m) {
-		
-		ArrayList<String> dest = new ArrayList<>(m.destinatari.length);
-		for(String d : m.destinatari) {
-			try {
-				if(!d.equals(this.casellaElettronica.getInfo().indirizzo))
-					dest.add(d);
-			} catch (RemoteException e) {
-				e.printStackTrace();
-				System.exit(-1);
+		try {
+			ArrayList<String> dest = new ArrayList<>(m.destinatari.length);
+			InfoCasellaElettronica info = this.casellaElettronica.getInfo();
+			for(String d : m.destinatari) {
+					if(!d.equals(info.indirizzo)) {
+						dest.add(d);
+					}
 			}
+			dest.add(m.mittente);
+			new CreaMailFrame(m, this, dest.toArray(new String[0])).setVisible(true);
+		} catch (RemoteException e) {
+			JOptionPane.showMessageDialog(null, "Controllare che il server sia raggiungibile.",
+					"Errore collegamento al server.", JOptionPane.ERROR_MESSAGE);
+			System.exit(-1);
 		}
-		dest.add(m.mittente);
-		new CreaMailFrame(m, this, dest.toArray(new String[0])).setVisible(true);
-		
 	}
 
 }
