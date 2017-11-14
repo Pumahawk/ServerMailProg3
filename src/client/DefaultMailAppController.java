@@ -132,7 +132,8 @@ public class DefaultMailAppController implements MailAppController {
 						dest.add(d);
 					}
 			}
-			dest.add(m.mittente);
+			if(!m.mittente.equals(info.indirizzo))
+				dest.add(m.mittente);
 			new CreaMailFrame(m, this, dest.toArray(new String[0])).setVisible(true);
 		} catch (RemoteException e) {
 			JOptionPane.showMessageDialog(null, "Controllare che il server sia raggiungibile.",
