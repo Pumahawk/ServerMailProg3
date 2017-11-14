@@ -2,7 +2,10 @@ package server;
 
 import java.rmi.RemoteException;
 import java.rmi.server.UnicastRemoteObject;
+import java.text.DateFormat;
+import java.text.SimpleDateFormat;
 import java.util.Collections;
+import java.util.Date;
 import java.util.LinkedList;
 import java.util.List;
 import java.util.Set;
@@ -56,7 +59,8 @@ public class CasellaElettronica extends UnicastRemoteObject implements CasellaEl
 	}
 	@Override
 	public void sendMail(String[] destinatari,int priorita, String argomento, String testo) throws RemoteException, CasellaElettronicaException{
-		Mail mail = new Mail(this.mailCounter.get(), "dataTemp", this.indirizzo, destinatari, priorita, argomento, testo);
+		DateFormat df = new SimpleDateFormat("yyyy/M/dd HH:mm:ss");
+		Mail mail = new Mail(this.mailCounter.get(), df.format(new Date()), this.indirizzo, destinatari, priorita, argomento, testo);
 		Set<String> elencoMail = this.server.caselleList.keySet();
 		synchronized(this.server.caselleList) {
 			for(String m : destinatari) {
