@@ -46,6 +46,8 @@ public class ClientApp {
 		for(boolean open = false; !open;)
 			try {
 				String mainMail = JOptionPane.showInputDialog("Inserire la mail principale.");
+				if(mainMail == null)
+					break;
 				ClientApp app = new ClientApp(mainMail, server.loginMail(mainMail));
 				DefaultMailAppController controller = new DefaultMailAppController(app.caselleElettronica, modelloElencoMail);
 				if(app.caselleElettronica == null)
