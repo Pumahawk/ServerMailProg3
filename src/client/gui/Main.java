@@ -43,6 +43,7 @@ public class Main extends JFrame implements Observer{
 		};
 
 		this.tabellaMail.addColumn("ID");
+		this.tabellaMail.addColumn("Mittente");
 		this.tabellaMail.addColumn("Data");
 		this.tabellaMail.addColumn("Priorita");
 		this.tabellaMail.addColumn("Argomento");
@@ -70,7 +71,7 @@ public class Main extends JFrame implements Observer{
 	}
 
 	public void addMail(Mail m) {
-		Object[] row = { m.id, m.data, m.priorita, m.argomento };
+		Object[] row = { m.id, m.mittente, m.data, m.priorita, m.argomento };
 		tabellaMail.insertRow(0, row);
 	}
 }
