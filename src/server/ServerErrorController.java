@@ -1,5 +1,7 @@
 package server;
 
+import javax.swing.JOptionPane;
+
 public class ServerErrorController implements ServerErrorListener {
 
 	@Override
@@ -7,6 +9,8 @@ public class ServerErrorController implements ServerErrorListener {
 		System.err.println("Errore creazione RMI.");
 		System.err.println("Controllare di aver riavviato il server.");
 		ex.printStackTrace();
+		JOptionPane.showMessageDialog(null, "Impossibile avviare il registro RMI.\nRiavviare il server.",
+				"Errore inizializzazione server.", JOptionPane.ERROR_MESSAGE);
 		System.exit(-1);
 	}
 
