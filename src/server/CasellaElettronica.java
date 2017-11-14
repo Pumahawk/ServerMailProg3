@@ -149,6 +149,7 @@ public class CasellaElettronica extends UnicastRemoteObject implements CasellaEl
 		for(Mail m : this.mail)
 			if(m.id == id) {
 				this.mail.remove(m);
+				fireRequestPerformed(new CasellaElettronicaEvent(this, CasellaElettronicaEvent.Code.REMOVE_MAIL));
 				return;
 			}
 		throw new CasellaElettronicaException(Error.ID_MAIL_NOT_EXIST, "Impossibile cancellare la mail. Id non trovato");

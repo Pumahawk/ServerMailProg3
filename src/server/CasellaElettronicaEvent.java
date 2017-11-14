@@ -8,7 +8,8 @@ public class CasellaElettronicaEvent extends EventObject {
 	public static enum Code {
 		GET_ALL_MAIL_REQUEST,
 		GET_INFO_REQUEST,
-		GET_MAIL_REQUEST
+		GET_MAIL_REQUEST,
+		REMOVE_MAIL
 	}
 
 	public final Code code;

@@ -80,6 +80,9 @@ public class ServerLogger implements ServerListener, MailListener, CasellaElettr
 		case GET_MAIL_REQUEST:
 			println("Richiesta mail da : " + ((CasellaElettronica)e.getSource()).indirizzo);
 			break;
+		case REMOVE_MAIL:
+			println("Richiesta eliminazione mail da : " + ((CasellaElettronica)e.getSource()).indirizzo);
+			break;
 		}
 		
 	}
