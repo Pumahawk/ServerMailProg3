@@ -64,7 +64,9 @@ public class Main extends JFrame implements Observer{
 
 	@Override
 	public void update(Observable o, Object arg) {
-		addMail((Mail) arg);
+		this.tabellaMail.setRowCount(0);
+		for(Mail m : ((ElencoMail) o).getAll())
+			addMail(m);
 	}
 
 	public void addMail(Mail m) {

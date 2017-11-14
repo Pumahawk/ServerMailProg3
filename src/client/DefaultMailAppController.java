@@ -66,7 +66,12 @@ public class DefaultMailAppController implements MailAppController {
 
 	@Override
 	public void cancellaMailAction(int id) {
-		// TODO Auto-generated method stub
+		try {
+			this.casellaElettronica.deleteMail(id);
+			this.listaMail.remove(id);
+		} catch (RemoteException | CasellaElettronicaException e) {
+			e.printStackTrace();
+		}
 		
 	}
 

@@ -25,6 +25,7 @@ public class ElencoMail extends Observable {
 		for (Mail m : this.elencoMail) {
 			if (m.id == id) {
 				this.elencoMail.remove(m);
+				this.setChanged();
 				this.notifyObservers(m);
 				break;
 			}
