@@ -58,6 +58,8 @@ public class ClientApp {
 						app.caselleElettronica.addCMailListener(controller.new CasellaElettronicaListener());
 						main.setVisible(true);
 					}
+					else
+						break;
 				} catch (RemoteException e) {
 					JOptionPane.showMessageDialog(null, "Errore collegamento al server.",
 							"Errore server.", JOptionPane.ERROR_MESSAGE);
