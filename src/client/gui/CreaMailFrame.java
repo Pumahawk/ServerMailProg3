@@ -103,6 +103,7 @@ public class CreaMailFrame extends JFrame {
 		this.destinatari.setText(dest);
 		this.oggetto.setText(m.argomento);
 		this.priorita.setSelectedItem(m.priorita);
-		this.testo.setText(m.testo);
+		String delimitatore = "\n\n-----------" + m.data + "-----------\n\n";
+		this.testo.setText(delimitatore + m.testo);
 	}
 }
