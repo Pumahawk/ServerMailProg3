@@ -9,12 +9,10 @@ import mail.MailListener;
 public class ServerLogger implements ServerListener, MailListener, CasellaElettronicaListener {
 	
 	Document lg;
-	private final String nameClass;
 
 	
 	public ServerLogger(Document lg) {
 		this.lg = lg;
-		this.nameClass = getClass().getName();
 	}
 
 	void println(String s) {
@@ -27,20 +25,17 @@ public class ServerLogger implements ServerListener, MailListener, CasellaElettr
 	}
 	@Override
 	public synchronized void login(ServerEvent e, String mail) {
-		println("<"+nameClass+":login>");
 		println("Richiesta login mail: " + mail);
 	}
 
 	@Override
 	public synchronized void mailExist(ServerEvent e, String mail) {
-		println("<"+nameClass+":logimailExist>");
 		println("Richiesta verifica esistenza mail: " + mail);
 		
 	}
 
 	@Override
 	public synchronized void creazioneMail(ServerEvent e, String mail, CasellaElettronica casella) {
-		println("<"+nameClass+":creazioneMail>");
 		println("Richiesta creazione mail: " + mail);
 		if(casella != null) {
 			casella.addMailListener(this);
@@ -51,20 +46,18 @@ public class ServerLogger implements ServerListener, MailListener, CasellaElettr
 
 	@Override
 	public synchronized void mailInviata(MailEvent e) {
-		println("<"+nameClass+":mailInviata>");
-		println("Mittente: " + e.mail.mittente);
-		println("Destinatari:");
+		println("Invio mail:");
+		println("--> Mittente: " + e.mail.mittente);
+		println("--> Destinatari:");
 		for(String destinatario : e.mail.destinatari)
-			println("--> " + destinatario);
+			println("------> " + destinatario);
 	}
 
 	@Override
 	public synchronized void mailRicevuta(MailEvent e) {
-		println("<"+nameClass+":mailRicevuta>");
-		println("Mittente: " + e.mail.mittente);
-		println("Destinatari:");
-		for(String destinatario : e.mail.destinatari)
-			println("--> " + destinatario);
+		println("Ricezione mail:");
+		println("--> CasellaPosta: " + ((CasellaElettronica)e.getSource()).indirizzo);
+		println("--> Mittente: " + e.mail.mittente);
 		
 	}
 
