@@ -30,8 +30,6 @@ public class ServerApp {
 			serverApp.createMail("lorenzo2@gmail.com");
 			serverApp.createMail("lorenzo3@gmail.com");
 			
-			serverApp.addServerErrorListener(new ServerErrorController());
-			serverApp.addServerListener(new ServerLogger(logDoc));
 		} catch (RemoteException e) {
 			System.err.print("Impossibile creare l'oggetto server.");
 			e.printStackTrace();
