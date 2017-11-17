@@ -98,7 +98,7 @@ public class ViewMail extends JFrame {
 		rispondiButton.addActionListener(e -> controller.rispondiMailAction(m));
 		JButton rispondiATuttiButton = new JButton("Rispondi a tutti");
 		rispondiATuttiButton.addActionListener(e -> controller.rispondiATuttiMailAction(m));
-		JButton innoltraButton = new JButton("Innoltra");
+		JButton innoltraButton = new JButton("Inoltra");
 		innoltraButton.addActionListener(e -> {
 			String desti = JOptionPane.showInputDialog("Inserire destinatari.");
 			if(desti == null)
